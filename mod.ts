@@ -1,4 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [element: string]: any;
+    }
+  }
+}
+
 export type XMLComponent<T = any> = T & { __isXML: boolean; __expr: [string, string][] }
 export type Renderer = (...args: any[]) => string
 export type JSXHandler = (...args: any[]) => any
@@ -45,8 +53,8 @@ export function createXMLHandler<T extends JSXHandler> (h: T): T {
 export function createXMLRenderer<T extends Renderer>(renderSSR: T, declaration?: string): T {
   const renderer: Renderer = (...args: any[]): string => {
     const component = args[0]
-    if (component?.__isXML || component?.component?.__isXML) {
-      const expressions: [string, string][] = component?.__expr ?? component?.component?.__expr ?? []
+    if (component?.__isXML || component?.component?.__isXML || component?.type?.__isXML) {
+      const expressions: [string, string][] = component?.__expr ?? component?.component?.__expr ?? component?.type?.__expr ?? []
       let rendered = renderSSR(...args).replaceAll(new RegExp(regex, 'gu'), '<$1$2')
   
       for (const [tagName, replacement] of expressions) {
