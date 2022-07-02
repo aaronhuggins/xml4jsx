@@ -7,9 +7,10 @@ declare global {
   }
 }
 
+/** A Mix-in type for components marked as XML. */
 export type XMLComponent<T = any> = T & { __isXML: boolean; __expr: [string, string][] }
-export type Renderer = (...args: any[]) => string
-export type JSXHandler = (...args: any[]) => any
+type Renderer = (...args: any[]) => string
+type JSXHandler = (...args: any[]) => any
 
 const selfClosing = [
   'area',
@@ -29,7 +30,10 @@ const selfClosing = [
 ]
 const regex = `<(\\/{0,1})purexml(${selfClosing.join('|')})`
 
-/** Mark a JSX function or class as XML, and optionally provide a map of tag expressions. */
+/** Mark a JSX function or class as XML, and optionally provide a map of tag expressions.
+ * @param component - A JSX component to be marked as XML.
+ * @param tagExpressions - An object map of tags within the component to their replacement tag; intended for xml namespace tags.
+ */
 export function xml<T = any> (component: T, tagExpressions?: Record<string, string>): XMLComponent<T> {
   (component as any).__isXML = true;
   (component as any).__expr = Object.entries(tagExpressions ?? {});
@@ -37,7 +41,9 @@ export function xml<T = any> (component: T, tagExpressions?: Record<string, stri
   return component as any
 }
 
-/** Create a handler for XML components, wrapping the passed `h` function. */
+/** Create a handler for XML components, wrapping the passed `h` function.
+ * @param h - A JSX transform handler function, like `createElement` in React.
+ */
 export function createXMLHandler<T extends JSXHandler> (h: T): T {
   const marker: JSXHandler = (...args: any[]): any => {
     const tagOrComponent = args[0]
@@ -49,7 +55,10 @@ export function createXMLHandler<T extends JSXHandler> (h: T): T {
   return marker as T
 }
 
-/** Create a server-side renderer with support for XML components. */
+/** Create a server-side renderer with support for XML components.
+ * @param renderSSR - A JSX server renderer function, like Preact's `render-to-string`.
+ * @param declaration - An optional XML declaration, e.g. `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>`.
+ */
 export function createXMLRenderer<T extends Renderer>(renderSSR: T, declaration?: string): T {
   const renderer: Renderer = (...args: any[]): string => {
     const component = args[0]
