@@ -4,19 +4,19 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import { h } from "https://deno.land/x/nano_jsx@v0.0.32/mod.ts"
-import { createXMLHandler, xml } from "../mod.ts"
+import { h } from "https://deno.land/x/nano_jsx@v0.0.32/mod.ts";
+import { createXMLHandler, xml } from "../mod.ts";
 
-const x = createXMLHandler(h)
+const x = createXMLHandler(h);
 
-export function NanoJSX () {
+export function NanoJSX() {
   return (
     <doc>
       <title>Nano JSX!</title>
       <link>https://nanojsx.io/</link>
       <namespaceComponent></namespaceComponent>
     </doc>
-  )
+  );
 }
 
-xml(NanoJSX, { namespaceComponent: "namespace:component" })
+xml(NanoJSX, { namespaceComponent: "namespace:component" });

@@ -4,19 +4,19 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import { createElement } from "https://esm.sh/react@18.2.0"
-import { createXMLHandler, xml } from "../mod.ts"
+import { createElement } from "https://esm.sh/react@18.2.0";
+import { createXMLHandler, xml } from "../mod.ts";
 
-const x = createXMLHandler(createElement)
+const x = createXMLHandler(createElement);
 
-export function React () {
+export function React() {
   return (
     <doc>
       <title>React!</title>
       <link>https://reactjs.org/</link>
       <namespaceComponent></namespaceComponent>
     </doc>
-  )
+  );
 }
 
-xml(React, { namespaceComponent: "namespace:component" })
+xml(React, { namespaceComponent: "namespace:component" });
